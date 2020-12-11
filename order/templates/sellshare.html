@@ -1,0 +1,312 @@
+{%extends 'home.html'%}
+{%block body%}
+<style>
+  #otherAnswer{
+display:none;
+  }
+  #otherAnswerss{
+  display:none;
+  }
+  #taes{
+  display:none;
+  }
+</style>
+<p class="h1 text-muted text-center">Welcome to Limit Order Book</p>
+<p class="h5 text-muted text-center">Sell Your Share.</p>
+<p class="h5 text-muted text-center"><a href="{%url 'order:ordershare'%}">BuyShare</a> </p>
+<div class="container">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">ShareName</th>
+      <th scope="col">SharePrice</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for a,b in share.items%}
+    <tr>
+
+
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{a}}</td>
+      <td id="{{a}}">{{b}}</td>
+<td></td>
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+  </div>
+<div class="container">
+<p class="h5 text-muted text-center">Your all orders</p>
+  <table class="table" >
+  <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">ShareName</th>
+      <th scope="col">Sharecount</th>
+      <th scope="col">Enter share</th>
+      <th scope="col">SharePrice</th>
+      <th scope="col">type</th>
+      <th scope="col">Avg</th>
+      <th scope="col">Sell</th>
+      <th scope="col">Limit</th>
+      <th scope="col">stop</th>
+    </tr>
+  </thead>
+    <tbody>
+    {%if sh1.shareno > 0 %}
+    <tr id="Reliance">
+      <form method="post" action="{%url 'order:sellmarket'%}">
+        {%csrf_token%}
+      <td>No key</td>
+      <td>Reliance</td>
+      <td id="relishare">{{sh1.shareno}}</td>
+      <td><input type="number" name="no" placeholder="enter no of share to sell" required></td>
+      <td id="priReliance">{{sh1.price}}</td>
+      <td>{{share1.Type}}</td>
+      <td id="avgRe">{{sh1.avg}}</td>
+      <td >{{sh1.buy}}</td>
+      <td>None</td>
+      <td>None</td>
+      <td> <button type="submit" name="but" value="Reliance">Submit</button></td>
+        </form>
+    </tr>
+{%endif%}
+
+{%if sh2.shareno > 0%}
+    <tr id="IBM">
+      <form method="post" action="{%url 'order:sellmarket'%}">
+        {%csrf_token%}
+      <td>No key</td>
+      <td>IBM</td>
+      <td id="IBMshare">{{sh2.shareno}}</td>
+      <td><input type="number" name="no" placeholder="enter no of share to sell" required></td>
+      <td id="priIBM">{{sh2.price}}</td>
+      <td>{{share2.Type}}</td>
+      <td id="avgIBM">{{sh2.avg}}</td>
+      <td >{{sh2.buy}}</td>
+      <td>None</td>
+      <td>None</td>
+      <td> <button type="submit" name="but" value="IBM">Submit</button></td>
+       </form>
+    </tr>
+{%endif%}
+    {%for a in l11%}
+    <tr >
+      <form method="post" action="{%url 'order:sellLimitshare' a.id%}">
+        {%csrf_token%}
+      <td>{{a.id}}:Limit</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      {% if a.buy is True%}
+      <td><input type="number" name="no" placeholder="enter no of share to sell" required></td>
+      {%endif%}
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td>{{a.buy}}</td>
+      <td>{{a.Limit}}</td>
+
+      <td>None</td>
+     {% if a.buy is True%}
+      <td><button type="submit" name="but" value="Reliance">Submit</button></td>
+      {%endif%}
+      </form>
+    </tr>
+{%endfor%}
+    {%for a in l22%}
+    <tr >
+      <form method="post" action="{%url 'order:sellStopshare' a.id%}">
+        {%csrf_token%}
+      <td>{{a.id}}:Stop</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+          <td><input type="number" name="no" placeholder="enter no of share to sell" required></td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td >{{a.buy}}</td>
+      <td>None</td>
+      <td>{{a.Stoploss}}</td>
+        <td><button type="submit" name="but" value="Reliance">Submit</button></td>
+      </form>
+    </tr>
+{%endfor%}
+    {%for a in l33%}
+    <tr >
+      <form method="post" action="{%url 'order:sellLimitshare' a.id%}">
+        {%csrf_token%}
+      <td>{{a.id}}:limit</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+            {% if a.buy is True%}
+      <td><input type="number" name="no" placeholder="enter no of share to sell" required></td>
+      {%endif%}
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td >{{a.buy}}</td>
+      <td>{{a.Limit}}</td>
+      <td>None</td>
+
+     {% if a.buy is True%}
+      <td><button type="submit" name="but" value="IBM">Submit</button></td>
+      {%endif%}
+      </form>
+    </tr>
+{%endfor%}
+    {%for a in l44%}
+    <tr >
+      <form method="post" action="{%url 'order:sellStopshare' a.id%}">
+      {%csrf_token%}
+      <td>{{a.id}}:Stop</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+         <td><input type="number" name="no" placeholder="enter no of share to sell" required></td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td>{{a.buy}}</td>
+      <td>None</td>
+      <td>{{a.Stoploss}}</td>
+           <td><button type="submit" name="but" value="IBM">Submit</button></td>
+      </form>
+    </tr>
+{%endfor%}
+  </tbody>
+  </table>
+  </div>
+
+<div class="container">
+<p class="h5 text-muted text-center">Your all sell orders Till now</p>
+  <table class="table" >
+  <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">ShareName</th>
+      <th scope="col">Sharecount</th>
+      <th scope="col">SellPrice</th>
+      <th scope="col">type</th>
+      <th scope="col">Avg</th>
+      <th scope="col">Sell</th>
+      <th scope="col">Limit</th>
+      <th scope="col">stop</th>
+    </tr>
+  </thead>
+    <tbody>
+    {%if share1.shareno > 0 %}
+    <tr >
+      <td>No key</td>
+      <td>Reliance</td>
+      <td >{{share1.shareno}}</td>
+      <td >{{share1.price}}</td>
+      <td>{{share1.Type}}</td>
+      <td >{{share1.avg}}</td>
+      <td >{{share1.buy}}</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+{%endif%}
+{%if share2.shareno > 0%}
+    <tr >
+      <td>No key</td>
+      <td>IBM</td>
+      <td >{{share2.shareno}}</td>
+      <td >{{share2.price}}</td>
+      <td>{{share2.Type}}</td>
+      <td >{{share2.avg}}</td>
+      <td >{{share2.buy}}</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+{%endif%}
+    {%for a in l%}
+    <tr >
+      <td>{{a.id}}:Stop</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td >{{a.buy}}</td>
+      <td>{{a.Limit}}</td>
+      <td>None</td>
+    </tr>
+{%endfor%}
+    {%for a in l2%}
+    <tr >
+      <td>{{a.id}}:Stop</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td >{{a.buy}}</td>
+      <td>None</td>
+      <td>{{a.Stoploss}}</td>
+    </tr>
+{%endfor%}
+    {%for a in l3%}
+    <tr >
+      <td>{{a.id}}:limit</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td >{{a.buy}}</td>
+      <td>{{a.Limit}}</td>
+      <td>None</td>
+    </tr>
+{%endfor%}
+    {%for a in l4%}
+    <tr >
+      <td>{{a.id}}:Limit</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td id="{{a.id}}IBMfaslestop">{{a.buy}}</td>
+      <td>None</td>
+      <td>{{a.Stoploss}}</td>
+    </tr>
+{%endfor%}
+  </tbody>
+  </table>
+  </div>
+
+
+  <script>
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'order:chnageshareprice' %}",  // URL to your view that serves new info
+        })
+        .done(function(response) {
+            $('#Reliance').html(response.p1);
+            $('#IBM').html(response.p2);
+        });
+    }, 10000)
+</script>
+<script>
+
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'order:checkbuy' %}",// URL to your view that serves new info
+        })
+        .done(function(response) {
+        if(response.done){
+        $('#relishare').html(response.Rshareno);
+        $('#priReliance').html(response.Rprice);
+        $('#avgRe').html(response.Ravg);
+        $('#IBMshare').html(response.Ishareno);
+        $('#priIBM').html(response.Iprice);
+        $('#avgIBM').html(response.Iavg);
+        }
+        });
+    }, 9990)
+</script>
+{%endblock%}

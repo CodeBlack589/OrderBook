@@ -1,0 +1,318 @@
+{%extends 'home.html'%}
+{%block body%}
+<style>
+  #otherAnswer{
+display:none;
+  }
+  #otherAnswerss{
+  display:none;
+  }
+  #taes{
+  display:none;
+  }
+</style>
+<p class="h1 text-muted text-center">Welcome to Limit Order Book</p>
+<p class="h5 text-muted text-center">You have to refresh the page to check the your limit order or stop order status.</p>
+<p class="h5 text-muted text-center">You have to refresh the page only first time when you either buy reliance  or IBM market order.</p>
+<p class="h5 text-muted text-center"><a href="{%url 'order:sellshare'%}">SellYourShare</a> </p>
+<div class="container">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">ShareName</th>
+      <th scope="col">SharePrice</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for a,b in share.items%}
+    <tr>
+
+
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{a}}</td>
+      <td id="{{a}}">{{b}}</td>
+<td></td>
+    </tr>
+  {%endfor%}
+  </tbody>
+</table>
+  </div>
+<div class="container">
+  <p class="h5 text-muted text-center">Order New Share</p>
+  <p class="h5 text-muted text-center">Click on box to buy share </p>
+
+<form id="id_form" class="form-control" method="post">
+  {%csrf_token%}
+  <select class="form-control" id="sel" >
+    <option value=""></option>
+  <option value="Reliance">Reliance</option>
+    <option value="IBM">IBM</option>
+</select>
+  <div id="taes">
+  <div class="form-group" >
+    <label for="shareno">Number of Share</label>
+    <input type="number" class="form-control" id="shareno" placeholder="Type total Number of share" required>
+  </div>
+  <div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+  <label class="form-check-label" for="exampleRadios1">
+    Market Order
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+  <label class="form-check-label" for="exampleRadios2">
+    Limit Order
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
+  <label class="form-check-label" for="exampleRadios3">
+    Stop order
+  </label>
+</div>
+<input id="otherAnswer" placeholder="Enter Limit" type="number" class="form-control" >
+  <input id="otherAnswerss" placeholder="Enter Stop order price" type="number" class="form-control" >
+<button type="submit" class="btn btn-success">Order</button>
+    </div>
+</form>
+</div>
+<div class="container">
+<p class="h5 text-muted text-center">Your all orders Till now</p>
+  <table class="table" >
+  <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">ShareName</th>
+      <th scope="col">Sharecount</th>
+      <th scope="col">SharePrice</th>
+      <th scope="col">type</th>
+      <th scope="col">Avg</th>
+      <th scope="col">buy</th>
+      <th scope="col">Limit</th>
+      <th scope="col">stop</th>
+    </tr>
+  </thead>
+    <tbody>
+    {%if share1.shareno > 0 %}
+    <tr id="Reliance">
+      <td>No key</td>
+      <td>Reliance</td>
+      <td id="relishare">{{share1.shareno}}</td>
+      <td id="priReliance">{{share1.price}}</td>
+      <td>{{share1.Type}}</td>
+      <td id="avgRe">{{share1.avg}}</td>
+      <td >{{share1.buy}}</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+{%endif%}
+{%if share2.shareno > 0%}
+    <tr id="IBM">
+      <td>No key</td>
+      <td>IBM</td>
+      <td id="IBMshare">{{share2.shareno}}</td>
+      <td id="priIBM">{{share2.price}}</td>
+      <td>{{share2.Type}}</td>
+      <td id="avgIBM">{{share2.avg}}</td>
+      <td >{{share2.buy}}</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+{%endif%}
+    {%for a in l%}
+    <tr id="{{a.id}}RelianceLimit">
+      <td>{{a.id}}:Limit</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td id="{{a.id}}RelianceFalseLimit">{{a.buy}}</td>
+      <td>{{a.Limit}}</td>
+      <td>None</td>
+    </tr>
+{%endfor%}
+    {%for a in l2%}
+    <tr id="{{a.id}}RelianceStop">
+      <td>{{a.id}}:Stop</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td id="{{a.id}}RelianceFalseStop">{{a.buy}}</td>
+      <td>None</td>
+      <td>{{a.Stoploss}}</td>
+    </tr>
+{%endfor%}
+    {%for a in l3%}
+    <tr id="{{a.id}}IBMlimit">
+      <td>{{a.id}}:limit</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td id="{{a.id}}IBMFalselimit">{{a.buy}}</td>
+      <td>{{a.Limit}}</td>
+      <td>None</td>
+    </tr>
+{%endfor%}
+    {%for a in l4%}
+    <tr id="{{a.id}}IBMstop">
+      <td>{{a.id}}:Stop</td>
+      <td>Reliance</td>
+      <td>{{a.shareno}}</td>
+      <td>{{a.price}}</td>
+      <td>{{a.Type}}</td>
+      <td>{{a.avg}}</td>
+      <td id="{{a.id}}IBMfaslestop">{{a.buy}}</td>
+      <td>None</td>
+      <td>{{a.Stoploss}}</td>
+    </tr>
+{%endfor%}
+  </tbody>
+  </table>
+  </div>
+
+<div class="container">
+<p class="h5 text-muted text-center">Recent Order</p>
+  <table class="table" id="tabless">
+  <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">ShareName</th>
+      <th scope="col">Sharecount</th>
+      <th scope="col">SharePrice</th>
+      <th scope="col">type</th>
+      <th scope="col">Avg</th>
+      <th scope="col">buy</th>
+      <th scope="col">Limit</th>
+      <th scope="col">stop</th>
+    </tr>
+  </thead>
+    <tbody>
+
+  </tbody>
+  </table>
+  </div>
+  <script>
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'order:chnageshareprice' %}",  // URL to your view that serves new info
+        })
+        .done(function(response) {
+            $('#Reliance').html(response.p1);
+            $('#IBM').html(response.p2);
+        });
+    }, 10000)
+</script>
+<script>
+
+    setInterval(function() {
+        $.ajax({
+            type: "GET",
+            url: "{% url 'order:checkbuy' %}",// URL to your view that serves new info
+        })
+        .done(function(response) {
+        if(response.done){
+        $('#relishare').html(response.Rshareno);
+        $('#priReliance').html(response.Rprice);
+        $('#avgRe').html(response.Ravg);
+        $('#IBMshare').html(response.Ishareno);
+        $('#priIBM').html(response.Iprice);
+        $('#avgIBM').html(response.Iavg);
+        }
+        });
+    }, 9990)
+</script>
+<script>
+$(document).ready(function(){
+$("input[type='radio']").change(function(){
+if($(this).val()=="option2")
+{
+$("#otherAnswer").show();
+}
+else
+{
+$("#otherAnswer").hide();
+}
+});
+});
+</script>
+<script>
+$(document).ready(function(){
+$("input[type='radio']").change(function(){
+if($(this).val()=="option3")
+{
+$("#otherAnswerss").show();
+}
+else
+{
+$("#otherAnswerss").hide();
+}
+});
+});
+</script>
+<script>
+$(document).ready(function(){
+$("#sel").on('change', function(){
+if($(this).val()=="")
+{
+$("#taes").hide();
+}
+else
+{
+$("#taes").show();
+}
+});
+});
+</script>
+<script>
+    $("#id_form").submit(function (e) {
+    e.preventDefault();
+
+      $.ajax({
+      type: "POST",
+        url: "{%url 'order:orderss'%}",
+        data: {
+              'select':$('#sel').val(),
+            'shareno':$('#shareno').val(),
+            'sharetype1':$("input[name='exampleRadios']:radio:checked").val(),
+            'Limit':$('#otherAnswer').val(),
+            'Stop':$('#otherAnswerss').val(),
+             csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.ordershares) {
+          if($('#data.name').length){
+           $("#data.name").html("<tr><td >"+data.key +"</td><td>"+data.name +"</td><td>" + data.shareno + "</td><td>" + data.price +  "</td><td>" + data.market+ "</td><td>" +data.avg+ "</td><td>" +data.buy + "</td></tr>");
+
+
+          }
+
+          else{
+             $("#tabless").append("<tr id='data.name'><td >"+data.key +"</td><td>"+data.name +"</td><td>" + data.shareno + "</td><td>" + data.price +  "</td><td>" + data.market+ "</td><td>" +data.avg+ "</td><td>" +data.buy + "</td></tr>");
+}
+          }
+          if (data.ordershares1) {
+
+             $("#tabless").append("<tr><td id='data.namedata.key'>"+data.key+"</td><td>" +data.name +"</td><td>" + data.shareno + "</td><td>" + data.price +  "</td><td>" + data.market+ "</td><td>" +data.avg+ "</td><td>" +data.buy +  "</td><td>"+data.limit +  "</td><td>"+data.stop +"</td></tr>");
+
+          }
+
+          if (data.ordershares2) {
+
+             $("#tabless").append("<tr><td id='data.namedata.key'>"+data.key+"</td><td>"  +data.name +"</td><td>" + data.shareno + "</td><td>" + data.price +  "</td><td>" + data.market+ "</td><td>" +data.avg+ "</td><td>" +data.buy +"</td><td>"+ data.limit +"</td><td>" + data.stop +"</td></tr>");
+
+          }
+        }
+      });
+
+    });
+  </script>
+{%endblock%}
